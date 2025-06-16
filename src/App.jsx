@@ -5,6 +5,7 @@ import "./App.css";
 import Hero from "./components/Hero/Hero";
 import Navbar from "./components/Navbar/Navbar";
 import GaugeChart2 from "./components/GuageChart2/GuageChart2";
+import LineChart from "./components/GaugeChart/LineChart";
 
 // ... other imports
 
@@ -22,6 +23,7 @@ function App() {
       <Navbar />
       <Hero />
       <GaugeChart2 {...gaugeData} />
+      <LineChart />
     </>
   );
 }
