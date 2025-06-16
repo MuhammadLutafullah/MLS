@@ -29,8 +29,9 @@ const GaugeChart = ({
       arc={{
         colorArray: arcColors,
         subArcs: [{ limit: 10 }, { limit: 30 }, {}, {}, {}], // Adjust if needed
-        padding: arcPadding,
+        padding: 0,
         width: arcWidth,
+        cornerRadius: 0,
       }}
       pointer={{
         elastic: true,
