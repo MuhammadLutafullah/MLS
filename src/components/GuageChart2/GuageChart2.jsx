@@ -13,32 +13,36 @@ const GaugeChart = ({
   arcPadding = 0.02,
 }) => {
   return (
-    <GaugeComponent
-      className="w-[700px] max-msm:w-[400px] max-xxsm:!w-[300px] mx-auto"
-      value={value}
-      minValue={minValue}
-      maxValue={maxValue}
-      type="semicircle"
-      labels={{
-        valueLabel: { hide: true },
-        tickLabels: {
-          type: "inner",
-          ticks: ticks.map((tick) => ({ value: tick })),
-        },
-      }}
-      arc={{
-        colorArray: arcColors,
-        subArcs: [{ limit: 10 }, { limit: 30 }, {}, {}, {}], // Adjust if needed
-        padding: 0,
-        width: arcWidth,
-        cornerRadius: 0,
-      }}
-      pointer={{
-        elastic: true,
-        animationDelay: 0,
-        width: needleWidth,
-      }}
-    />
+    <>
+      <div className="w-[700px] max-msm:w-[400px] max-xxsm:!w-[300px] mx-auto">
+        <GaugeComponent
+          className=""
+          value={value}
+          minValue={minValue}
+          maxValue={maxValue}
+          type="semicircle"
+          labels={{
+            valueLabel: { hide: true },
+            tickLabels: {
+              type: "inner",
+              ticks: ticks.map((tick) => ({ value: tick })),
+            },
+          }}
+          arc={{
+            colorArray: arcColors,
+            subArcs: [{ limit: 10 }, { limit: 30 }, {}, {}, {}], // Adjust if needed
+            padding: 0,
+            width: arcWidth,
+            cornerRadius: 0,
+          }}
+          pointer={{
+            elastic: true,
+            animationDelay: 0,
+            width: needleWidth,
+          }}
+        />
+      </div>
+    </>
   );
 };
 
