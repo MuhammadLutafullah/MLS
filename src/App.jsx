@@ -10,13 +10,12 @@ import GaugeChart2 from "./components/GuageChart2/GuageChart2";
 
 function App() {
   const gaugeData = {
-    value: 75, // Current value
+    value: 75, // Current value (will show "75%" in center)
     minValue: 0,
     maxValue: 100,
-
-    arcColors: ["#00FF00", "#FF0000"], // Custom gradient (green to red)
-    ticks: [10, 30, 50, 70, 90], // Custom ticks
-    needleWidth: 4, // Slightly thicker needle
+    arcColors: ["#00FF00", "#FF0000"],
+    ticks: [0, 10, 30, 50, 70, 90, 100], // Full range including 0 and 100
+    needleWidth: 4,
   };
   return (
     <>
