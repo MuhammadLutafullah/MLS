@@ -1,20 +1,8 @@
 import React from "react";
 import Select from "react-select";
 
-const DropdownSelect = ({ options, onChange, placeholder, className }) => {
-  return (
-    <Select
-      options={options}
-      onChange={onChange}
-      placeholder={placeholder}
-      className={`react-select-container mb-[21px] ${className}`}
-      classNamePrefix="react-select "
-    />
-  );
-};
-
-DropdownSelect.defaultProps = {
-  options: [
+const DropdownSelect = ({
+  options = [
     { value: "1960/cypress", label: "1960/Cypress" },
     { value: "1960/cypress-creek-north", label: "1960/Cypress Creek North" },
     { value: "1960/cypress-creek-south", label: "1960/Cypress Creek South" },
@@ -34,8 +22,19 @@ DropdownSelect.defaultProps = {
     { value: "brays-oaks", label: "Brays Oaks" },
     { value: "briargrove", label: "Briargrove" },
   ],
-  placeholder: "Select a neighborhood...",
-  className: "max-w-[330px] mx-auto",
+  onChange = () => {},
+  placeholder = "Select a neighborhood...",
+  className = "max-w-[330px] mx-auto",
+}) => {
+  return (
+    <Select
+      options={options}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={`react-select-container mb-[21px] ${className}`}
+      classNamePrefix="react-select"
+    />
+  );
 };
 
 export default DropdownSelect;
