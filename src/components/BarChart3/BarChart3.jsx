@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { barChartData } from "../FakeData/FakeData";
+import { barChartData3 } from "../FakeData/FakeData";
 
 ChartJS.register(
   CategoryScale,
@@ -20,14 +20,7 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = () => {
-  const [visibleDatasets, setVisibleDatasets] = useState(
-    barChartData.datasets.reduce((acc, _, index) => {
-      acc[index] = true;
-      return acc;
-    }, {})
-  );
-
+const BarChart3 = () => {
   const [screenSize, setScreenSize] = useState({
     isXSmall: window.innerWidth <= 450,
     isSmall: window.innerWidth <= 650,
@@ -45,20 +38,6 @@ const BarChart = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleDatasetVisibility = (datasetIndex) => {
-    setVisibleDatasets((prev) => ({
-      ...prev,
-      [datasetIndex]: !prev[datasetIndex],
-    }));
-  };
-
-  const filteredData = {
-    ...barChartData,
-    datasets: barChartData.datasets.filter(
-      (_, index) => visibleDatasets[index]
-    ),
-  };
-
   // Font size calculations
   const getResponsiveFontSize = (base, small, xsmall) => {
     if (screenSize.isXSmall) return xsmall;
@@ -68,67 +47,47 @@ const BarChart = () => {
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false, // Added for better small screen behavior
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: "bottom",
-        labels: {
-          color: "#333",
-          font: {
-            size: getResponsiveFontSize(14, 12, 10),
-            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-            weight: "bold",
-          },
-          usePointStyle: true,
-          padding: getResponsiveFontSize(20, 15, 10),
-          generateLabels: (chart) => {
-            return barChartData.datasets.map((dataset, index) => ({
-              text: visibleDatasets[index]
-                ? `${dataset.label}${screenSize.isXSmall ? "" : " ✓"}`
-                : dataset.label,
-              fillStyle: visibleDatasets[index]
-                ? dataset.backgroundColor
-                : "transparent",
-              strokeStyle: dataset.borderColor,
-              lineWidth: 2,
-              hidden: !visibleDatasets[index],
-              index: index,
-              pointStyle: "circle",
-            }));
-          },
-        },
-        onClick: (chart, legendItem, legend) => {
-          toggleDatasetVisibility(legendItem.index);
-        },
+        display: false, // Hide legend as there's only one dataset
       },
       title: {
         display: true,
-        text: barChartData.title,
+        text: barChartData3.title,
         color: "#000",
         font: {
           size: getResponsiveFontSize(18, 16, 14),
           weight: "bold",
         },
+        padding: {
+          top: 10,
+          bottom: 20,
+        },
       },
       subtitle: {
         display: true,
-        text: barChartData.subtitle,
-        color: "#000",
+        text: barChartData3.subtitle,
+        color: "#666",
         font: {
           size: getResponsiveFontSize(14, 12, 10),
+        },
+        padding: {
+          bottom: 20,
         },
       },
       tooltip: {
         mode: "index",
         intersect: false,
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        titleColor: "#fff",
+        bodyColor: "#fff",
         bodyFont: {
           size: getResponsiveFontSize(12, 10, 8),
         },
         callbacks: {
-          title: (context) => barChartData.labels[context[0].dataIndex],
-          label: (context) => {
-            const dataset = barChartData.datasets[context.datasetIndex];
-            return `${dataset.label}: ${context.raw}`;
+          label: function (context) {
+            return `${context.raw} homes`;
           },
         },
       },
@@ -136,19 +95,24 @@ const BarChart = () => {
     scales: {
       y: {
         beginAtZero: true,
-        max: 100,
+        max: 1000,
         title: {
           display: true,
           text: "Total Home Sales",
+          color: "#333",
           font: {
             size: getResponsiveFontSize(14, 12, 10),
+            weight: "bold",
           },
         },
         ticks: {
-          stepSize: 20,
-          color: "#000",
+          stepSize: 200,
+          color: "#666",
           font: {
             size: getResponsiveFontSize(12, 10, 8),
+          },
+          callback: function (value) {
+            return value === 1000 ? "1K" : value;
           },
         },
         grid: {
@@ -158,20 +122,31 @@ const BarChart = () => {
       x: {
         title: {
           display: true,
-          text: "Months",
+          text: "Year",
+          color: "#333",
           font: {
             size: getResponsiveFontSize(14, 12, 10),
+            weight: "bold",
           },
         },
         grid: {
           display: false,
         },
         ticks: {
-          color: "#000",
+          color: "#666",
           font: {
             size: getResponsiveFontSize(12, 10, 8),
           },
+          // Auto-rotate labels on small screens
+          maxRotation: screenSize.isXSmall ? 45 : 0,
+          autoSkip: true,
         },
+      },
+    },
+    elements: {
+      bar: {
+        borderRadius: 4,
+        borderSkipped: false,
       },
     },
   };
@@ -180,12 +155,15 @@ const BarChart = () => {
     <div className="bg-gray-50 p-6 max-sm:p-2 rounded-lg shadow-md mx-auto mb-[40px]">
       <div
         className="chart-container"
-        style={{ height: screenSize.isXSmall ? "350px" : "600px" }}
+        style={{
+          height: screenSize.isXSmall ? "350px" : "500px",
+          position: "relative",
+        }}
       >
-        <Bar options={options} data={filteredData} />
+        <Bar options={options} data={barChartData3} />
       </div>
     </div>
   );
 };
 
-export default BarChart;
+export default BarChart3;

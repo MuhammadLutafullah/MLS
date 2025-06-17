@@ -4,12 +4,15 @@ import Hero from "./components/Hero/Hero";
 import Navbar from "./components/Navbar/Navbar";
 import GaugeChart2 from "./components/GuageChart/GuageChart";
 import LineChart from "./components/LineChart/LineChart";
-import BarChart from "./components/BarChart1/BarChart1";
+import BarChart1 from "./components/BarChart1/BarChart1";
+import BarChart2 from "./components/BarChart2/BarChart2";
 import {
   pendingSalesData,
   daysOnMarketData,
   priceReductionData,
 } from "./components/FakeData/FakeData";
+import BarChart3 from "./components/BarChart3/BarChart3";
+import BarChart4 from "./components/BarChart4/BarChart4";
 
 function App() {
   const gaugeData = {
@@ -49,7 +52,21 @@ function App() {
         </p>
       </div>
       <div className="custom-container mx-auto max-w-[1440px] px-[20px] ">
-        <BarChart />
+        <BarChart1 />
+      </div>
+      <div className="custom-container mx-auto max-w-[1440px] px-[20px] ">
+        <BarChart2 />
+      </div>
+      <div className="custom-container mx-auto max-w-[1440px] px-[20px]">
+        <p className="font-medium font-normal text-[36px] my-[40px] max-sm:my-[20px] leading-[40px] max-sm:text-[24px] max-sm:leading-[30px]  ">
+          Historical Trends
+        </p>
+      </div>
+      <div className="custom-container mx-auto max-w-[1440px] px-[20px] ">
+        <BarChart3 />
+      </div>
+      <div className="custom-container mx-auto max-w-[1440px] px-[20px] ">
+        <BarChart4 />
       </div>
     </>
   );
