@@ -1,7 +1,6 @@
 // LineChart.jsx
 import React, { useState } from "react";
 import { Line } from "react-chartjs-2";
-import { lineChartData } from "./FakeData";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,18 +24,25 @@ ChartJS.register(
   Filler
 );
 
-const LineChart = () => {
+const LineChart = ({
+  data,
+  title = "",
+  subtitle = "",
+  yAxisMin = 0,
+  showLegend = true,
+  legendPosition = "top",
+  tension = 0.3,
+  pointRadius = 4,
+  pointHoverRadius = 6,
+}) => {
   const [visibleDatasets, setVisibleDatasets] = useState(
-    lineChartData.datasets.reduce((acc, _, index) => {
+    data.datasets.reduce((acc, _, index) => {
       acc[index] = true;
       return acc;
     }, {})
   );
 
-  const chartTitle = "1960/Cypress Pending Sales";
-  const chartSubtitle = "Past: 13 Weeks, Ending Jun 14";
-  const yAxisMax =
-    Math.max(...lineChartData.datasets.flatMap((d) => d.data)) + 2;
+  const yAxisMax = Math.max(...data.datasets.flatMap((d) => d.data)) + 2;
   const yAxisStep = Math.ceil(yAxisMax / 6);
 
   const toggleDatasetVisibility = (datasetIndex) => {
@@ -47,18 +53,16 @@ const LineChart = () => {
   };
 
   const filteredData = {
-    ...lineChartData,
-    datasets: lineChartData.datasets.filter(
-      (_, index) => visibleDatasets[index]
-    ),
+    ...data,
+    datasets: data.datasets.filter((_, index) => visibleDatasets[index]),
   };
 
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: true,
-        position: "top",
+        display: showLegend,
+        position: legendPosition,
         labels: {
           color: "#333",
           font: {
@@ -69,7 +73,7 @@ const LineChart = () => {
           usePointStyle: true,
           padding: 20,
           generateLabels: (chart) => {
-            return lineChartData.datasets.map((dataset, index) => ({
+            return data.datasets.map((dataset, index) => ({
               text: visibleDatasets[index]
                 ? `${dataset.label} ✓`
                 : dataset.label,
@@ -89,18 +93,18 @@ const LineChart = () => {
         },
       },
       title: {
-        display: true,
-        text: chartTitle,
-        color: "#black",
+        display: !!title,
+        text: title,
+        color: "#000",
         font: {
           size: 18,
           weight: "bold",
         },
       },
       subtitle: {
-        display: true,
-        text: chartSubtitle,
-        color: "#black",
+        display: !!subtitle,
+        text: subtitle,
+        color: "#000",
         font: {
           size: 14,
         },
@@ -109,9 +113,9 @@ const LineChart = () => {
         mode: "index",
         intersect: false,
         callbacks: {
-          title: (context) => lineChartData.labels[context[0].dataIndex],
+          title: (context) => data.labels[context[0].dataIndex],
           label: (context) => {
-            const dataset = lineChartData.datasets[context.datasetIndex];
+            const dataset = data.datasets[context.datasetIndex];
             return `${dataset.label}: ${context.raw}`;
           },
         },
@@ -123,39 +127,43 @@ const LineChart = () => {
           display: false,
         },
         ticks: {
-          color: "#black",
+          color: "#000",
           maxRotation: 0,
           minRotation: 0,
-          callback: (value) => lineChartData.labels[value],
+          callback: (value) => data.labels[value],
         },
       },
       y: {
-        min: 0,
+        min: yAxisMin,
         max: yAxisMax,
         ticks: {
           stepSize: yAxisStep,
-          color: "#black",
+          color: "#000",
           callback: (value) => value,
         },
         grid: {
-          color: "rgba(255, 255, 255, 0.1)",
+          color: "rgba(0, 0, 0, 0.1)",
         },
       },
     },
     elements: {
       point: {
-        radius: 4,
-        hoverRadius: 6,
+        radius: pointRadius,
+        hoverRadius: pointHoverRadius,
       },
       line: {
-        tension: 0.3,
+        tension: tension,
       },
     },
   };
 
   return (
-    <div className="custom-container mx-auto max-w-[1440px] px-[20px]">
-      <div className="bg-gray-50 p-6 max-sm:p-2 rounded-lg shadow-md mx-auto mt-[40px]">
+    <div className="">
+      <div className="bg-gray-50 p-6 max-sm:p-2 rounded-lg shadow-md mx-auto mb-[40px]">
+        <p className="text-[17px] font-bold max-sm:text-[14px] max-sm:font-regular  mb-2">
+          {data.title || title}
+        </p>
+        <p className=""></p>
         <Line options={options} data={filteredData} />
       </div>
     </div>
